@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Login</title>
+  </head>
+
+  <body>
+    <div class="header">
+      <i class="material-icons" id="header-icon">&#xe8e8;</i>
+      <h1 class="app-name">Safe PasW</h1>
+    </div>
+    <div class="login-container">
+      <form class="login-form">
+        <h1>Login</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+        <div class="user-actions">
+          <a href="sign_up.html">Sign up</a>
+          <a href="forgot_password.html">Forgot password</a>
+        </div>
+        <button type="submit" onclick="LogUserIn(event)">Login</button>
+      </form>
+    </div>
+    <script>
+        function LogUserIn(event) {
+            event.preventDefault(); // Prevent form submission
+
+            var userName = document.getElementById("username").value;
+            var userPassword = document.getElementById("password").value;
+
+            var data = {
+                name: userName,
+                password: userPassword
+            };
+
+            fetch("http://localhost:8888/api/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Invalid username or password');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Login successful:", data);
+                document.getElementById("userForm").reset();
+            })
+            .catch((error) => {
+                console.error("Error:", error.message);
+                alert("Invalid username or password");
+            });
+        }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="signUp-style.css" />
+    <title>Create User</title>
+  </head>
+  <body>
+    <div class="header">
+      <i class="material-icons" id="header-icon">&#xe8e8;</i>
+      <h1 class="app-name">Safe PasW</h1>
+    </div>
+    <div class="container">
+      <form class="signUp-Form">
+        <h2>Sign Up</h2>
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="userName" required />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="button" onclick="saveUser()">Sign Up</button>
+      </form>
+    </div>
+    <script>
+      function saveUser() {
+        var userName = document.getElementById("userName").value;
+        var userEmail = document.getElementById("email").value;
+        var userPassword = document.getElementById("password").value;
+
+
+        var data = {
+          name: userName,
+          email: userEmail,
+          password: userPassword
+        };
+
+        fetch("http://localhost:8888/api/users/new", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("userForm").reset();
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+    </script>
+  </body>
+</html>
